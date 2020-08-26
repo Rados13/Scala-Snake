@@ -1,0 +1,18 @@
+[0m[[0m[0minfo[0m] [0m[0mFast optimizing C:\Users\Radek\git\Scala-Snake\target\scala-2.13\scalajs-snake-fastopt.js[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Compute reachability: 12221 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Assemble LinkedClasses: 3105 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: 34649 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Batch mode: false[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Incremental part: 5534 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizing 118 methods.[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizer part: 6333 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: 12525 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Compute reachability: 6137 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Assemble LinkedClasses: 415 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: 7271 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Generate classes: 8020 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Write trees: 277 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Class tree cache stats: reused: 336 -- invalidated: 4[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Method tree cache stats: reused: 729 -- invalidated: 68[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: 10063 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mBasicBackend: Write result: 19660 us[0m

@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Radek\git\Scala-Snake\src\main\scala\example\Game.scala:41:36: Boolean does not take parameters[0m
+[0m[[0m[31merror[0m] [0m[0m            if(snake.notEatYourself() && ctx!=null){[0m
+[0m[[0m[31merror[0m] [0m[0m                                   ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\Radek\git\Scala-Snake\src\main\scala\example\Game.scala:43:27: Unit does not take parameters[0m
+[0m[[0m[31merror[0m] [0m[0m                snake.move();[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
