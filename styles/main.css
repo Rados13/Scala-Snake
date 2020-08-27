@@ -5,3 +5,19 @@ body{
 .buttons{
     background-color: GhostWhite;
 }
+
+.score-text{
+    display:block;
+}
+
+.score-div,.game-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#game{
+    display: none;
+}
+
+

@@ -12,14 +12,22 @@
 
     <div id="menu" class="jumbotron text-center">
       <h2>Hello in my Snake game wrote in Scalajs</h2>
-      <h4>Set game params</h4>
-      <label>Map size</label><input type="number" id="size">
-      <br>
-      <button id='Easy' class="buttons" onclick="setSpeedOnEasy()">Easy speed</button>
-      <button id='Medium' class="buttons" onclick="setSpeedOnMedium()">Medium speed</button>
-      <button id='Hard' class="buttons" onclick="setSpeedOnHard()">Hard speed</button>
-      <br>
-      <button onclick="startGame()">Start Game!</button>
+      <div id='params'>
+        <h4>Set game params</h4>
+        <label>Map size</label><input type="number" id="size">
+        <br>
+        <button id='Easy' class="buttons" onclick="setSpeedOnEasy()">Easy speed</button>
+        <button id='Medium' class="buttons" onclick="setSpeedOnMedium()">Medium speed</button>
+        <button id='Hard' class="buttons" onclick="setSpeedOnHard()">Hard speed</button>
+        <br>
+        <button onclick="startGame()">Start Game!</button>
+      </div>
+      <div id="game" class="game-div">
+        <div class="score-div">
+          <div class="score-text">Score: </div><div id="score" class="score-text">0</div>
+        </div>
+        <button id="pause" class="buttons" onclick="pauseGame()">Pause</button>
+      </div>
     </div>
     <div id="test">
       <canvas id="map" width="800" height="800">Your browser don't work with canvas</canvas>

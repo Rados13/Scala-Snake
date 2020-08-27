@@ -5,3 +5,7 @@
 .vscode/*
 
 debug.log
+
+project/project/*
+project/.bloop/*
+project/target/*

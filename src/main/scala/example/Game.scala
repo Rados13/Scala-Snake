@@ -7,75 +7,62 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.html
 import org.scalajs.dom.raw.CanvasRenderingContext2D
 import Direction._
+import SpeedLevel._
 
 
-case class Game(mapHtml:html.Canvas,mapSize:Int){
+object Game{
+    def apply(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel):Game = {
+        val startGame = new Game(mapHtml,mapSize,speedLevel)
+        startGame.generateNewFood
+        startGame.generateNewFood
+        startGame
+    }
+}
+
+case class Game(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel){
+
+
     
-    var isNotEnd = true
     val snake:Snake = Snake(mapSize)
-    val fieldSize = 10;
+    val turnPerFoodGeneration = 25
+    val mapPainter = MapPainter(mapHtml,mapSize)
+    
+    var handler = 0
+    var turn = 0
+    var foodPositions:Array[Position] = Array()
 
-    var foodPositions:Array[Position] = Array();
-
-    def getContext: Either[String,CanvasRenderingContext2D] = mapHtml.getContext("2d") match {
-            case context: CanvasRenderingContext2D => Right(context)
-            case other => 
-                dom.window.alert(s"Error $other");
-                Left(s"Error $other")
-        } 
-
-    def play():Int = {
-        val ctx:CanvasRenderingContext2D = getContext.getOrElse(null);
-
-        mapHtml.height = mapSize*fieldSize;
-        mapHtml.width = mapSize*fieldSize;
-
-        generateNewFood;
-        generateNewFood;
-
-        
-        var turn = 0;
-        dom.window.addEventListener("keydown",matchingKey)
-        val handler = dom.window.setInterval(() => {
-            if(snake.notEatYourself && ctx!=null){
-                printMap(ctx);
-                snake.move;
-                eatCheck;
-                turn+=1;
+    val turnFunction = () => {
+        if(snake.notEatYourself && mapPainter!=null){
+                if(turn==0) generateNewFood
+                mapPainter.printMap(snake,foodPositions)
+                snake.move
+                eatCheck
+                turn = (turn+1)%turnPerFoodGeneration
             }else{
-                dom.window.alert("You eat yourself");
-                return -1
-            }
-        },100);
+                dom.window.clearInterval(handler)
+                dom.window.alert("You eat yourself")
+                println(snake.toString)
+                mapPainter.printMap(snake,foodPositions)
+        }
+    }
 
-        printMap(ctx);
-        
-        handler;
+
+    def play:Unit = {
+        dom.window.addEventListener("keydown",matchingKey)
+        handler = dom.window.setInterval(turnFunction,SpeedLevel.toValue(speedLevel))
+    }
+
+    def pause:Unit = {
+        dom.window.removeEventListener("keydown",matchingKey)
+        dom.window.clearInterval(handler)
     }
 
     def eatCheck = {
         val snakeHead = snake.positions.head
         if(foodPositions.contains(snakeHead)){
             foodPositions = foodPositions.filterNot(_==snakeHead)
-            snake.grow;
+            snake.grow
         }
-    }
-
-    def printMap(ctx:CanvasRenderingContext2D) ={
-        ctx.clearRect(0,0,mapSize*fieldSize,mapSize*fieldSize);
-        paintSnake(ctx);
-        paintFood(ctx);
-        
-    }
-
-    def paintSnake(ctx:CanvasRenderingContext2D):Unit ={
-        ctx.fillStyle = "green";
-        snake.positions.foreach(elem => ctx.fillRect(elem.positionX*fieldSize,elem.positionY*fieldSize,fieldSize,fieldSize));
-    }
-
-    def paintFood(ctx:CanvasRenderingContext2D):Unit = {
-        ctx.fillStyle = "red";
-        this.foodPositions.foreach(elem => ctx.fillRect(elem.positionX*fieldSize,elem.positionY*fieldSize,fieldSize,fieldSize))
     }
 
     def matchingKey(event:dom.KeyboardEvent):Unit = {
@@ -88,9 +75,9 @@ case class Game(mapHtml:html.Canvas,mapSize:Int){
         }
     }
 
-    def generateNewFood:Unit = this.foodPositions=this.foodPositions.:+(Position());
-
-
-
-
+    def generateNewFood:Unit = {
+        var newPosition = Position()
+        while(snake.positions.contains(newPosition) || foodPositions.contains(newPosition))newPosition=Position()
+        this.foodPositions=this.foodPositions.:+(newPosition)
+    }
 }
