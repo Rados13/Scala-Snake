@@ -30,11 +30,11 @@ case class MapPainter(ctx:CanvasRenderingContext2D,mapSize:Int){
 
     val fieldSize = MapPainter.fieldSize
 
-    def printMap(snake:Snake,foodPositions:Array[Position]) ={
+    def printMap(snakes:Array[Snake],foodPositions:Array[Position]) ={
         ctx.clearRect(0,0,mapSize*fieldSize,mapSize*fieldSize)
-        document.getElementById("score").innerText = snake.getScore().toString
+        snakes.zipWithIndex.foreach{case (snake,i) =>   document.getElementById(s"score$i").innerText = snake.getScore().toString}
         paintField()
-        paintSnake(snake)
+        snakes.zipWithIndex.foreach{case (snake,i) => paintSnake(snake,i)}
         paintFood(foodPositions)        
     }
 
@@ -43,8 +43,9 @@ case class MapPainter(ctx:CanvasRenderingContext2D,mapSize:Int){
         ctx.fillRect(0,0,mapSize*fieldSize,mapSize*fieldSize)
     }
 
-    def paintSnake(snake:Snake):Unit ={
-        ctx.fillStyle = "green"
+    def paintSnake(snake:Snake,idx:Int):Unit ={
+        if(idx==0)ctx.fillStyle = "green"
+        else ctx.fillStyle = "blue"
         snake.positions.foreach(elem => ctx.fillRect(elem.positionX*fieldSize,elem.positionY*fieldSize,fieldSize,fieldSize))
     }
 

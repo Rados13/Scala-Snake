@@ -4,11 +4,21 @@ import scala.util.Random
 import Direction._
 
 object Snake{  
+
+    var oldSnakesPositions:Array[Position] = Array()
+
     def apply(mapSize:Int):Snake = {
         Position.changeMapSize(mapSize)
-        val snakeElems:Array[Position] = (0 to 4).foldLeft(Array(Position(mapSize)))(
-            (acc:Array[Position],_) => acc.:+(acc.last.nextPosition(East)))
+        val snakeElems:Array[Position] = newSnakeElemes(mapSize)
         new Snake(snakeElems)
+    }
+
+    def newSnakeElemes(mapSize:Int):Array[Position] = {
+        var position = Position(mapSize)
+        while(oldSnakesPositions.contains(position))position = Position(mapSize)
+        val snakeElems = (0 to 4).foldLeft(Array(position))((acc:Array[Position],_) => acc.:+(acc.last.nextPosition(East)))
+        oldSnakesPositions = oldSnakesPositions ++ snakeElems
+        snakeElems
     }
 }
 
@@ -26,7 +36,6 @@ class Snake(var positions:Array[Position]){
         val firstPositions:Position = positions.head
         this.positions = firstPositions.nextPosition(direction) +: positions.init
         lastMoveDirection = direction
-        println(s"size: ${this.positions.size}")
     }
 
     override def toString(): String = s"[${this.positions.map(elem => elem.toString).mkString(",")}]"

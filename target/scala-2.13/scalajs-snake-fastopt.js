@@ -1,4 +1,4 @@
-let pauseGame,setSpeedOnHard,setSpeedOnEasy,startGame,setSpeedOnMedium;
+let changePlayerNum,pauseGame,setSpeedOnHard,setSpeedOnEasy,startGame,setSpeedOnMedium;
 (function(){
 'use strict';
 const $linkingInfo = Object.freeze({
@@ -714,11 +714,19 @@ class $c_Lexample_App$ extends $c_O {
     this.Lexample_App$__f_speedLevel = null;
     this.Lexample_App$__f_mapSize = 0;
     this.Lexample_App$__f_game = null;
+    this.Lexample_App$__f_isTwoPlayersMode = false;
+    this.Lexample_App$__f_textForOne = null;
+    this.Lexample_App$__f_textForTwo = null;
+    this.Lexample_App$__f_twoPlayersInfoDivId = null;
     $n_Lexample_App$ = this;
     this.Lexample_App$__f_speedLevel = $m_Lexample_SpeedLevel$().Lexample_SpeedLevel$__f_Easy;
     this.changeSelectedButton__s_Enumeration$Value__V($m_Lexample_SpeedLevel$().Lexample_SpeedLevel$__f_Easy);
     this.Lexample_App$__f_mapSize = 50;
-    this.Lexample_App$__f_game = null
+    this.Lexample_App$__f_game = null;
+    this.Lexample_App$__f_isTwoPlayersMode = false;
+    this.Lexample_App$__f_textForOne = "Mode: one player";
+    this.Lexample_App$__f_textForTwo = "Mode: two player";
+    this.Lexample_App$__f_twoPlayersInfoDivId = "two-players-info"
   };
   changeSelectedButton__s_Enumeration$Value__V(which) {
     $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById(this.Lexample_App$__f_speedLevel.toString__T()).setAttribute("style", "background-color: GhostWhite");
@@ -733,6 +741,23 @@ class $c_Lexample_App$ extends $c_O {
   };
   setSpeedOnHard__V() {
     this.changeSelectedButton__s_Enumeration$Value__V($m_Lexample_SpeedLevel$().Lexample_SpeedLevel$__f_Hard)
+  };
+  changePlayerNum__V() {
+    const htmlButton = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("players");
+    const x1 = $as_T(htmlButton.innerText);
+    if ((this.Lexample_App$__f_textForOne === x1)) {
+      htmlButton.innerText = this.Lexample_App$__f_textForTwo;
+      $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById(this.Lexample_App$__f_twoPlayersInfoDivId).setAttribute("style", "display:block");
+      this.Lexample_App$__f_isTwoPlayersMode = (!this.Lexample_App$__f_isTwoPlayersMode)
+    } else if ((this.Lexample_App$__f_textForTwo === x1)) {
+      htmlButton.innerText = this.Lexample_App$__f_textForOne;
+      $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById(this.Lexample_App$__f_twoPlayersInfoDivId).setAttribute("style", "display:none");
+      this.Lexample_App$__f_isTwoPlayersMode = (!this.Lexample_App$__f_isTwoPlayersMode)
+    } else {
+      const this$2 = $m_s_Console$();
+      const this$3 = this$2.out__Ljava_io_PrintStream();
+      this$3.java$lang$JSConsoleBasedPrintStream$$printString__T__V("Big error\n")
+    }
   };
   prepareGame__V() {
     this.Lexample_App$__f_mapSize = 50;
@@ -751,10 +776,11 @@ class $c_Lexample_App$ extends $c_O {
       }
     };
     const x$1 = $fround(this.Lexample_App$__f_mapSize);
-    if ((((x$1 === x$1) && (!((x$1 === Infinity) || (x$1 === (-Infinity))))) && (this.Lexample_App$__f_mapSize > 0))) {
+    if ((((x$1 === x$1) && (!((x$1 === Infinity) || (x$1 === (-Infinity))))) && (this.Lexample_App$__f_mapSize >= 10))) {
       $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert(("Start a game " + this.Lexample_App$__f_mapSize));
       const canvas = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("map");
-      this.Lexample_App$__f_game = $m_Lexample_Game$().apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__s_Enumeration$Value__Lexample_Game(canvas, this.Lexample_App$__f_mapSize, this.Lexample_App$__f_speedLevel);
+      this.Lexample_App$__f_game = $m_Lexample_Game$().apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__s_Enumeration$Value__Z__Lexample_Game(canvas, this.Lexample_App$__f_mapSize, this.Lexample_App$__f_speedLevel, this.Lexample_App$__f_isTwoPlayersMode);
+      $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("game").setAttribute("style", "display: flex;");
       this.startGame__V()
     } else {
       $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("You give incorrect map size")
@@ -762,12 +788,11 @@ class $c_Lexample_App$ extends $c_O {
   };
   startGame__V() {
     $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("params").setAttribute("style", "display: none");
+    if (this.Lexample_App$__f_isTwoPlayersMode) {
+      $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("scoreTwo").setAttribute("style", "display: flex");
+      $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("scoreOne").innerHTML = "Score player one: <div id=\"score0\" class=\"score-text\">0</div>"
+    };
     $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("pause").innerText = "Pause game";
-    $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("game").setAttribute("style", "display: flex");
-    const x = (void 0);
-    const this$2 = $m_s_Console$();
-    const this$3 = this$2.out__Ljava_io_PrintStream();
-    this$3.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x + "\n"));
     this.Lexample_App$__f_game.play__V()
   };
   pauseGame__V() {
@@ -830,12 +855,7 @@ class $c_Lexample_Snake extends $c_O {
     dest.set(0, rassoc$1);
     $m_s_Array$().copy__O__I__O__I__I__V(xs$2, 0, dest, 1, xs$2.u.length);
     this.Lexample_Snake__f_positions = dest;
-    this.Lexample_Snake__f_lastMoveDirection = this.Lexample_Snake__f_direction;
-    const xs$3 = this.Lexample_Snake__f_positions;
-    const x = ("size: " + xs$3.u.length);
-    const this$10 = $m_s_Console$();
-    const this$11 = this$10.out__Ljava_io_PrintStream();
-    this$11.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x + "\n"))
+    this.Lexample_Snake__f_lastMoveDirection = this.Lexample_Snake__f_direction
   };
   toString__T() {
     const $$x10 = $m_s_Predef$();
@@ -971,6 +991,15 @@ class $c_Lexample_Snake extends $c_O {
     return (xs$1.u.length === xs$2.u.length)
   };
 }
+function $as_Lexample_Snake(obj) {
+  return (((obj instanceof $c_Lexample_Snake) || (obj === null)) ? obj : $throwClassCastException(obj, "example.Snake"))
+}
+function $isArrayOf_Lexample_Snake(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.Lexample_Snake)))
+}
+function $asArrayOf_Lexample_Snake(obj, depth) {
+  return (($isArrayOf_Lexample_Snake(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lexample.Snake;", depth))
+}
 const $d_Lexample_Snake = new $TypeData().initClass({
   Lexample_Snake: 0
 }, false, "example.Snake", {
@@ -979,10 +1008,39 @@ const $d_Lexample_Snake = new $TypeData().initClass({
 });
 $c_Lexample_Snake.prototype.$classData = $d_Lexample_Snake;
 class $c_Lexample_Snake$ extends $c_O {
+  constructor() {
+    super();
+    this.Lexample_Snake$__f_oldSnakesPositions = null;
+    $n_Lexample_Snake$ = this;
+    const xs = $m_sci_Nil$();
+    const len = xs.length__I();
+    const array = $newArrayObject($d_Lexample_Position.getArrayOf(), [len]);
+    const iterator = $m_sc_Iterator$().sc_Iterator$__f_scala$collection$Iterator$$_empty;
+    let i = 0;
+    while (iterator.hasNext__Z()) {
+      array.set(i, iterator.next__O());
+      i = ((1 + i) | 0)
+    };
+    this.Lexample_Snake$__f_oldSnakesPositions = array
+  };
   apply__I__Lexample_Snake(mapSize) {
     const this$1 = $m_Lexample_Position$();
     this$1.Lexample_Position$__f_example$Position$$mapSize = mapSize;
-    const z = $makeNativeArrayWrapper($d_Lexample_Position.getArrayOf(), [$m_Lexample_Position$().apply__I__Lexample_Position(mapSize)]);
+    const snakeElems = this.newSnakeElemes__I__ALexample_Position(mapSize);
+    return new $c_Lexample_Snake(snakeElems)
+  };
+  newSnakeElemes__I__ALexample_Position(mapSize) {
+    let position = $m_Lexample_Position$().apply__I__Lexample_Position(mapSize);
+    while (true) {
+      const $$x1 = $m_sc_ArrayOps$();
+      const xs = this.Lexample_Snake$__f_oldSnakesPositions;
+      if ($$x1.contains$extension__O__O__Z(xs, position)) {
+        position = $m_Lexample_Position$().apply__I__Lexample_Position(mapSize)
+      } else {
+        break
+      }
+    };
+    const z = $makeNativeArrayWrapper($d_Lexample_Position.getArrayOf(), [position]);
     let result = z;
     const it = new $c_sci_RangeIterator(0, 1, 4, false);
     while (it.sci_RangeIterator__f__hasNext) {
@@ -1004,7 +1062,20 @@ class $c_Lexample_Snake$ extends $c_O {
       result = $asArrayOf_Lexample_Position(dest$1, 1)
     };
     const snakeElems = $asArrayOf_Lexample_Position(result, 1);
-    return new $c_Lexample_Snake(snakeElems)
+    const xs$1 = this.Lexample_Snake$__f_oldSnakesPositions;
+    const this$16 = $m_s_Array$();
+    const newLength$1 = ((xs$1.u.length + snakeElems.u.length) | 0);
+    let dest$3;
+    if ($d_Lexample_Position.getClassOf().isAssignableFrom__jl_Class__Z($objectGetClass(xs$1).getComponentType__jl_Class())) {
+      dest$3 = ($d_Lexample_Position.getClassOf().isPrimitive__Z() ? this$16.copyOf__O__I__O(xs$1, newLength$1) : $m_ju_Arrays$().copyOf__AO__I__jl_Class__AO(xs$1, newLength$1, $d_Lexample_Position.getArrayOf().getClassOf()))
+    } else {
+      const dest$2 = $newArrayObject($d_Lexample_Position.getArrayOf(), [newLength$1]);
+      $m_s_Array$().copy__O__I__O__I__I__V(xs$1, 0, dest$2, 0, xs$1.u.length);
+      dest$3 = dest$2
+    };
+    $m_s_Array$().copy__O__I__O__I__I__V(snakeElems, 0, dest$3, xs$1.u.length, snakeElems.u.length);
+    this.Lexample_Snake$__f_oldSnakesPositions = $asArrayOf_Lexample_Position(dest$3, 1);
+    return snakeElems
   };
 }
 const $d_Lexample_Snake$ = new $TypeData().initClass({
@@ -1750,6 +1821,15 @@ class $c_sc_ArrayOps$ extends $c_O {
     } else {
       throw new $c_s_MatchError(this$)
     }
+  };
+  zipWithIndex$extension__O__AT2(this$) {
+    const b = $newArrayObject($d_T2.getArrayOf(), [$m_sr_ScalaRunTime$().array_length__O__I(this$)]);
+    let i = 0;
+    while ((i < $m_sr_ScalaRunTime$().array_length__O__I(this$))) {
+      b.set(i, new $c_T2($m_sr_ScalaRunTime$().array_apply__O__I__O(this$, i), i));
+      i = ((1 + i) | 0)
+    };
+    return b
   };
   contains$extension__O__O__Z(this$, elem) {
     let $$x1;
@@ -2702,8 +2782,8 @@ class $c_s_util_hashing_MurmurHash3 extends $c_O {
   };
 }
 class $c_Lexample_Game$ extends $c_O {
-  apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__s_Enumeration$Value__Lexample_Game(mapHtml, mapSize, speedLevel) {
-    const startGame = new $c_Lexample_Game(mapHtml, mapSize, speedLevel);
+  apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__s_Enumeration$Value__Z__Lexample_Game(mapHtml, mapSize, speedLevel, isTwoPlayer) {
+    const startGame = new $c_Lexample_Game(mapHtml, mapSize, speedLevel, isTwoPlayer);
     startGame.generateNewFood__V();
     startGame.generateNewFood__V();
     return startGame
@@ -4812,12 +4892,13 @@ const $d_sjsr_AnonFunction1 = new $TypeData().initClass({
 });
 $c_sjsr_AnonFunction1.prototype.$classData = $d_sjsr_AnonFunction1;
 class $c_Lexample_Game extends $c_O {
-  constructor(mapHtml, mapSize, speedLevel) {
+  constructor(mapHtml, mapSize, speedLevel, isTwoPlayer) {
     super();
     this.Lexample_Game__f_mapHtml = null;
     this.Lexample_Game__f_mapSize = 0;
     this.Lexample_Game__f_speedLevel = null;
-    this.Lexample_Game__f_snake = null;
+    this.Lexample_Game__f_isTwoPlayer = false;
+    this.Lexample_Game__f_snakes = null;
     this.Lexample_Game__f_turnPerFoodGeneration = 0;
     this.Lexample_Game__f_mapPainter = null;
     this.Lexample_Game__f_handler = 0;
@@ -4827,7 +4908,8 @@ class $c_Lexample_Game extends $c_O {
     this.Lexample_Game__f_mapHtml = mapHtml;
     this.Lexample_Game__f_mapSize = mapSize;
     this.Lexample_Game__f_speedLevel = speedLevel;
-    this.Lexample_Game__f_snake = $m_Lexample_Snake$().apply__I__Lexample_Snake(mapSize);
+    this.Lexample_Game__f_isTwoPlayer = isTwoPlayer;
+    this.Lexample_Game__f_snakes = (isTwoPlayer ? $makeNativeArrayWrapper($d_Lexample_Snake.getArrayOf(), [$m_Lexample_Snake$().apply__I__Lexample_Snake(mapSize), $m_Lexample_Snake$().apply__I__Lexample_Snake(mapSize)]) : $makeNativeArrayWrapper($d_Lexample_Snake.getArrayOf(), [$m_Lexample_Snake$().apply__I__Lexample_Snake(mapSize)]));
     this.Lexample_Game__f_turnPerFoodGeneration = 25;
     this.Lexample_Game__f_mapPainter = $m_Lexample_MapPainter$().apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__Lexample_MapPainter(mapHtml, mapSize);
     this.Lexample_Game__f_handler = 0;
@@ -4843,22 +4925,112 @@ class $c_Lexample_Game extends $c_O {
     };
     this.Lexample_Game__f_foodPositions = array;
     this.Lexample_Game__f_turnFunction = new $c_sjsr_AnonFunction0(((this$3) => (() => {
-      if ((this$3.Lexample_Game__f_snake.notEatYourself__Z() && (this$3.Lexample_Game__f_mapPainter !== null))) {
+      const xs$1 = this$3.Lexample_Game__f_snakes;
+      let $$x1;
+      _return: {
+        let i$1 = 0;
+        while ((i$1 < xs$1.u.length)) {
+          const arg1 = xs$1.get(i$1);
+          const x$1 = $as_Lexample_Snake(arg1);
+          if ((!x$1.notEatYourself__Z())) {
+            $$x1 = false;
+            break _return
+          };
+          i$1 = ((1 + i$1) | 0)
+        };
+        $$x1 = true
+      };
+      if ((($$x1 && (this$3.Lexample_Game__f_mapPainter !== null)) && this$3.notEatOtherSnake__Z())) {
         if ((this$3.Lexample_Game__f_turn === 0)) {
           this$3.generateNewFood__V()
         };
-        this$3.Lexample_Game__f_mapPainter.printMap__Lexample_Snake__ALexample_Position__V(this$3.Lexample_Game__f_snake, this$3.Lexample_Game__f_foodPositions);
-        this$3.Lexample_Game__f_snake.move__V();
+        this$3.Lexample_Game__f_mapPainter.printMap__ALexample_Snake__ALexample_Position__V(this$3.Lexample_Game__f_snakes, this$3.Lexample_Game__f_foodPositions);
+        const xs$2 = this$3.Lexample_Game__f_snakes;
+        const f = ((this$2$1) => ((x$2$2) => {
+          const x$2 = $as_Lexample_Snake(x$2$2);
+          x$2.move__V()
+        }))(this$3);
+        const len$1 = xs$2.u.length;
+        let i$2 = 0;
+        if ((xs$2 !== null)) {
+          while ((i$2 < len$1)) {
+            const arg1$1 = xs$2.get(i$2);
+            f(arg1$1);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_I(xs$2, 1)) {
+          const x3 = $asArrayOf_I(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$2 = x3.get(i$2);
+            f(arg1$2);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_D(xs$2, 1)) {
+          const x4 = $asArrayOf_D(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$3 = x4.get(i$2);
+            f(arg1$3);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_J(xs$2, 1)) {
+          const x5 = $asArrayOf_J(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const t = x5.get(i$2);
+            const lo = t.RTLong__f_lo;
+            const hi = t.RTLong__f_hi;
+            f(new $c_RTLong(lo, hi));
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_F(xs$2, 1)) {
+          const x6 = $asArrayOf_F(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$4 = x6.get(i$2);
+            f(arg1$4);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_C(xs$2, 1)) {
+          const x7 = $asArrayOf_C(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$5 = x7.get(i$2);
+            f($bC(arg1$5));
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_B(xs$2, 1)) {
+          const x8 = $asArrayOf_B(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$6 = x8.get(i$2);
+            f(arg1$6);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_S(xs$2, 1)) {
+          const x9 = $asArrayOf_S(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$7 = x9.get(i$2);
+            f(arg1$7);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else if ($isArrayOf_Z(xs$2, 1)) {
+          const x10 = $asArrayOf_Z(xs$2, 1);
+          while ((i$2 < len$1)) {
+            const arg1$8 = x10.get(i$2);
+            f(arg1$8);
+            i$2 = ((1 + i$2) | 0)
+          }
+        } else {
+          throw new $c_s_MatchError(xs$2)
+        };
         this$3.eatCheck__V();
         this$3.Lexample_Game__f_turn = $intMod(((1 + this$3.Lexample_Game__f_turn) | 0), this$3.Lexample_Game__f_turnPerFoodGeneration)
       } else {
         $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().clearInterval(this$3.Lexample_Game__f_handler);
-        $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("You eat yourself");
-        const x = this$3.Lexample_Game__f_snake.toString__T();
-        const this$5 = $m_s_Console$();
-        const this$6 = this$5.out__Ljava_io_PrintStream();
-        this$6.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x + "\n"));
-        this$3.Lexample_Game__f_mapPainter.printMap__Lexample_Snake__ALexample_Position__V(this$3.Lexample_Game__f_snake, this$3.Lexample_Game__f_foodPositions)
+        this$3.Lexample_Game__f_mapPainter.printMap__ALexample_Snake__ALexample_Position__V(this$3.Lexample_Game__f_snakes, this$3.Lexample_Game__f_foodPositions);
+        if ((this$3.Lexample_Game__f_isTwoPlayer && this$3.isSecondWin__Z())) {
+          $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("Second player win")
+        } else if (this$3.Lexample_Game__f_isTwoPlayer) {
+          $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("First player win")
+        } else {
+          $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("You eat yourself")
+        }
       }
     }))(this))
   };
@@ -4874,108 +5046,246 @@ class $c_Lexample_Game extends $c_O {
     }))(this));
     $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().clearInterval(this.Lexample_Game__f_handler)
   };
-  eatCheck__V() {
+  isSecondWin__Z() {
     const $$x1 = $m_sc_ArrayOps$();
-    const xs = this.Lexample_Game__f_snake.Lexample_Snake__f_positions;
-    const snakeHead = $as_Lexample_Position($$x1.head$extension__O__O(xs));
-    const $$x2 = $m_sc_ArrayOps$();
-    const xs$1 = this.Lexample_Game__f_foodPositions;
-    if ($$x2.contains$extension__O__O__Z(xs$1, snakeHead)) {
-      const xs$2 = this.Lexample_Game__f_foodPositions;
-      const evidence$1 = $m_s_reflect_ClassTag$().apply__jl_Class__s_reflect_ClassTag($objectGetClass(xs$2).getComponentType__jl_Class());
-      let capacity = 0;
-      let size = 0;
-      let jsElems = null;
-      const elementClass = evidence$1.runtimeClass__jl_Class();
-      capacity = 0;
-      size = 0;
-      const isCharArrayBuilder = (elementClass === $d_C.getClassOf());
-      jsElems = [];
-      let i = 0;
-      while ((i < xs$2.u.length)) {
-        const x = xs$2.get(i);
-        const x$1 = $as_Lexample_Position(x);
-        if ((!((x$1 === null) ? (snakeHead === null) : x$1.equals__O__Z(snakeHead)))) {
-          const unboxedElem = (isCharArrayBuilder ? $uC(x) : ((x === null) ? elementClass.jl_Class__f_data.zero : x));
-          jsElems.push(unboxedElem)
+    const xs = this.Lexample_Game__f_snakes.get(0).Lexample_Snake__f_positions;
+    const snakeFirstHead = $as_Lexample_Position($$x1.head$extension__O__O(xs));
+    if ((!this.Lexample_Game__f_snakes.get(0).notEatYourself__Z())) {
+      return true
+    } else {
+      const $$x2 = $m_sc_ArrayOps$();
+      const xs$1 = this.Lexample_Game__f_snakes.get(1).Lexample_Snake__f_positions;
+      return $$x2.contains$extension__O__O__Z(xs$1, snakeFirstHead)
+    }
+  };
+  notEatOtherSnake__Z() {
+    if ((!this.Lexample_Game__f_isTwoPlayer)) {
+      return true
+    } else {
+      const firstSnake = this.Lexample_Game__f_snakes.get(0);
+      const secondSnake = this.Lexample_Game__f_snakes.get(1);
+      const $$x2 = $m_sc_ArrayOps$();
+      const xs = secondSnake.Lexample_Snake__f_positions;
+      const $$x1 = $m_sc_ArrayOps$();
+      const xs$1 = firstSnake.Lexample_Snake__f_positions;
+      if ((!$$x2.contains$extension__O__O__Z(xs, $$x1.head$extension__O__O(xs$1)))) {
+        const $$x4 = $m_sc_ArrayOps$();
+        const xs$2 = firstSnake.Lexample_Snake__f_positions;
+        const $$x3 = $m_sc_ArrayOps$();
+        const xs$3 = secondSnake.Lexample_Snake__f_positions;
+        return (!$$x4.contains$extension__O__O__Z(xs$2, $$x3.head$extension__O__O(xs$3)))
+      } else {
+        return false
+      }
+    }
+  };
+  eatCheck__V() {
+    const xs = this.Lexample_Game__f_snakes;
+    const f = ((this$2) => ((snake$2) => {
+      const snake = $as_Lexample_Snake(snake$2);
+      const $$x1 = $m_sc_ArrayOps$();
+      const xs$1 = snake.Lexample_Snake__f_positions;
+      const snakeHead = $as_Lexample_Position($$x1.head$extension__O__O(xs$1));
+      const $$x2 = $m_sc_ArrayOps$();
+      const xs$2 = this$2.Lexample_Game__f_foodPositions;
+      if ($$x2.contains$extension__O__O__Z(xs$2, snakeHead)) {
+        const xs$3 = this$2.Lexample_Game__f_foodPositions;
+        const evidence$1 = $m_s_reflect_ClassTag$().apply__jl_Class__s_reflect_ClassTag($objectGetClass(xs$3).getComponentType__jl_Class());
+        let capacity = 0;
+        let size = 0;
+        let jsElems = null;
+        const elementClass = evidence$1.runtimeClass__jl_Class();
+        capacity = 0;
+        size = 0;
+        const isCharArrayBuilder = (elementClass === $d_C.getClassOf());
+        jsElems = [];
+        let i = 0;
+        while ((i < xs$3.u.length)) {
+          const x = xs$3.get(i);
+          const x$3 = $as_Lexample_Position(x);
+          if ((!((x$3 === null) ? (snakeHead === null) : x$3.equals__O__Z(snakeHead)))) {
+            const unboxedElem = (isCharArrayBuilder ? $uC(x) : ((x === null) ? elementClass.jl_Class__f_data.zero : x));
+            jsElems.push(unboxedElem)
+          };
+          i = ((1 + i) | 0)
         };
-        i = ((1 + i) | 0)
-      };
-      const elemRuntimeClass = ((elementClass === $d_V.getClassOf()) ? $d_jl_Void.getClassOf() : (((elementClass === $d_sr_Null$.getClassOf()) || (elementClass === $d_sr_Nothing$.getClassOf())) ? $d_O.getClassOf() : elementClass));
-      this.Lexample_Game__f_foodPositions = $asArrayOf_Lexample_Position($makeNativeArrayWrapper(elemRuntimeClass.jl_Class__f_data.getArrayOf(), jsElems), 1);
-      this.Lexample_Game__f_snake.grow__V()
+        const elemRuntimeClass = ((elementClass === $d_V.getClassOf()) ? $d_jl_Void.getClassOf() : (((elementClass === $d_sr_Null$.getClassOf()) || (elementClass === $d_sr_Nothing$.getClassOf())) ? $d_O.getClassOf() : elementClass));
+        this$2.Lexample_Game__f_foodPositions = $asArrayOf_Lexample_Position($makeNativeArrayWrapper(elemRuntimeClass.jl_Class__f_data.getArrayOf(), jsElems), 1);
+        snake.grow__V()
+      }
+    }))(this);
+    const len = xs.u.length;
+    let i$1 = 0;
+    if ((xs !== null)) {
+      while ((i$1 < len)) {
+        const arg1 = xs.get(i$1);
+        f(arg1);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_I(xs, 1)) {
+      const x3 = $asArrayOf_I(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$1 = x3.get(i$1);
+        f(arg1$1);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_D(xs, 1)) {
+      const x4 = $asArrayOf_D(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$2 = x4.get(i$1);
+        f(arg1$2);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_J(xs, 1)) {
+      const x5 = $asArrayOf_J(xs, 1);
+      while ((i$1 < len)) {
+        const t = x5.get(i$1);
+        const lo = t.RTLong__f_lo;
+        const hi = t.RTLong__f_hi;
+        f(new $c_RTLong(lo, hi));
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_F(xs, 1)) {
+      const x6 = $asArrayOf_F(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$3 = x6.get(i$1);
+        f(arg1$3);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_C(xs, 1)) {
+      const x7 = $asArrayOf_C(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$4 = x7.get(i$1);
+        f($bC(arg1$4));
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_B(xs, 1)) {
+      const x8 = $asArrayOf_B(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$5 = x8.get(i$1);
+        f(arg1$5);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_S(xs, 1)) {
+      const x9 = $asArrayOf_S(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$6 = x9.get(i$1);
+        f(arg1$6);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_Z(xs, 1)) {
+      const x10 = $asArrayOf_Z(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$7 = x10.get(i$1);
+        f(arg1$7);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else {
+      throw new $c_s_MatchError(xs)
     }
   };
   matchingKey__Lorg_scalajs_dom_raw_KeyboardEvent__V(event) {
     const x1 = $uI(event.keyCode);
     switch (x1) {
       case 37: {
-        this.Lexample_Game__f_snake.changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
         break
       }
       case 38: {
-        this.Lexample_Game__f_snake.changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
         break
       }
       case 39: {
-        this.Lexample_Game__f_snake.changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
         break
       }
       case 40: {
-        this.Lexample_Game__f_snake.changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
         break
       }
-      default: {
-        const x = ("Some else keydown " + x1);
-        const this$2 = $m_s_Console$();
-        const this$3 = this$2.out__Ljava_io_PrintStream();
-        this$3.java$lang$JSConsoleBasedPrintStream$$printString__T__V((x + "\n"))
+    };
+    if (this.Lexample_Game__f_isTwoPlayer) {
+      const x1$2 = $uI(event.keyCode);
+      switch (x1$2) {
+        case 65: {
+          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
+          break
+        }
+        case 87: {
+          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
+          break
+        }
+        case 68: {
+          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
+          break
+        }
+        case 83: {
+          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
+          break
+        }
       }
     }
   };
   generateNewFood__V() {
     const $$x1 = $m_Lexample_Position$();
     const this$1 = $m_Lexample_Position$();
-    let newPosition = $$x1.apply__I__Lexample_Position(this$1.Lexample_Position$__f_example$Position$$mapSize);
+    const elem = $$x1.apply__I__Lexample_Position(this$1.Lexample_Position$__f_example$Position$$mapSize);
+    let elem$1 = null;
+    elem$1 = elem;
     while (true) {
-      const $$x4 = $m_sc_ArrayOps$();
-      const xs = this.Lexample_Game__f_snake.Lexample_Snake__f_positions;
+      const xs = this.Lexample_Game__f_snakes;
+      let $$x4;
+      _return: {
+        let i = 0;
+        while ((i < xs.u.length)) {
+          const arg1 = xs.get(i);
+          const x$4 = $as_Lexample_Snake(arg1);
+          const $$x5 = $m_sc_ArrayOps$();
+          const xs$1 = x$4.Lexample_Snake__f_positions;
+          if ($$x5.contains$extension__O__O__Z(xs$1, $as_Lexample_Position(elem$1))) {
+            $$x4 = i;
+            break _return
+          };
+          i = ((1 + i) | 0)
+        };
+        $$x4 = (-1)
+      };
       let $$x3;
-      if ($$x4.contains$extension__O__O__Z(xs, newPosition)) {
+      if (($$x4 >= 0)) {
         $$x3 = true
       } else {
-        const $$x5 = $m_sc_ArrayOps$();
-        const xs$1 = this.Lexample_Game__f_foodPositions;
-        $$x3 = $$x5.contains$extension__O__O__Z(xs$1, newPosition)
+        const $$x6 = $m_sc_ArrayOps$();
+        const xs$2 = this.Lexample_Game__f_foodPositions;
+        $$x3 = $$x6.contains$extension__O__O__Z(xs$2, $as_Lexample_Position(elem$1))
       };
       if ($$x3) {
         const $$x2 = $m_Lexample_Position$();
-        const this$4 = $m_Lexample_Position$();
-        newPosition = $$x2.apply__I__Lexample_Position(this$4.Lexample_Position$__f_example$Position$$mapSize)
+        const this$8 = $m_Lexample_Position$();
+        elem$1 = $$x2.apply__I__Lexample_Position(this$8.Lexample_Position$__f_example$Position$$mapSize)
       } else {
         break
       }
     };
-    const xs$2 = this.Lexample_Game__f_foodPositions;
-    const x = newPosition;
-    const this$9 = $m_s_Array$();
-    const newLength = ((1 + xs$2.u.length) | 0);
+    const xs$3 = this.Lexample_Game__f_foodPositions;
+    const x = $as_Lexample_Position(elem$1);
+    const this$13 = $m_s_Array$();
+    const newLength = ((1 + xs$3.u.length) | 0);
     let dest$1;
-    if ($d_Lexample_Position.getClassOf().isAssignableFrom__jl_Class__Z($objectGetClass(xs$2).getComponentType__jl_Class())) {
-      dest$1 = ($d_Lexample_Position.getClassOf().isPrimitive__Z() ? this$9.copyOf__O__I__O(xs$2, newLength) : $m_ju_Arrays$().copyOf__AO__I__jl_Class__AO(xs$2, newLength, $d_Lexample_Position.getArrayOf().getClassOf()))
+    if ($d_Lexample_Position.getClassOf().isAssignableFrom__jl_Class__Z($objectGetClass(xs$3).getComponentType__jl_Class())) {
+      dest$1 = ($d_Lexample_Position.getClassOf().isPrimitive__Z() ? this$13.copyOf__O__I__O(xs$3, newLength) : $m_ju_Arrays$().copyOf__AO__I__jl_Class__AO(xs$3, newLength, $d_Lexample_Position.getArrayOf().getClassOf()))
     } else {
       const dest = $newArrayObject($d_Lexample_Position.getArrayOf(), [newLength]);
-      $m_s_Array$().copy__O__I__O__I__I__V(xs$2, 0, dest, 0, xs$2.u.length);
+      $m_s_Array$().copy__O__I__O__I__I__V(xs$3, 0, dest, 0, xs$3.u.length);
       dest$1 = dest
     };
-    $m_sr_ScalaRunTime$().array_update__O__I__O__V(dest$1, xs$2.u.length, x);
+    $m_sr_ScalaRunTime$().array_update__O__I__O__V(dest$1, xs$3.u.length, x);
     this.Lexample_Game__f_foodPositions = $asArrayOf_Lexample_Position(dest$1, 1)
   };
   productPrefix__T() {
     return "Game"
   };
   productArity__I() {
-    return 3
+    return 4
   };
   productElement__I__O(x$1) {
     switch (x$1) {
@@ -4989,6 +5299,10 @@ class $c_Lexample_Game extends $c_O {
       }
       case 2: {
         return this.Lexample_Game__f_speedLevel;
+        break
+      }
+      case 3: {
+        return this.Lexample_Game__f_isTwoPlayer;
         break
       }
       default: {
@@ -5016,7 +5330,10 @@ class $c_Lexample_Game extends $c_O {
     const data$3 = $m_sr_Statics$().anyHash__O__I(x$1);
     acc = $m_sr_Statics$().mix__I__I__I(hash$3, data$3);
     const hash$4 = acc;
-    return $m_sr_Statics$().finalizeHash__I__I__I(hash$4, 3)
+    const data$4 = (this.Lexample_Game__f_isTwoPlayer ? 1231 : 1237);
+    acc = $m_sr_Statics$().mix__I__I__I(hash$4, data$4);
+    const hash$5 = acc;
+    return $m_sr_Statics$().finalizeHash__I__I__I(hash$5, 4)
   };
   toString__T() {
     return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
@@ -5027,7 +5344,7 @@ class $c_Lexample_Game extends $c_O {
     } else if ((x$1 instanceof $c_Lexample_Game)) {
       const Game$1 = $as_Lexample_Game(x$1);
       let $$x1;
-      if ((this.Lexample_Game__f_mapSize === Game$1.Lexample_Game__f_mapSize)) {
+      if (((this.Lexample_Game__f_mapSize === Game$1.Lexample_Game__f_mapSize) && (this.Lexample_Game__f_isTwoPlayer === Game$1.Lexample_Game__f_isTwoPlayer))) {
         const x = this.Lexample_Game__f_mapHtml;
         const y = Game$1.Lexample_Game__f_mapHtml;
         $$x1 = $m_sr_BoxesRunTime$().equals__O__O__Z(x, y)
@@ -5075,25 +5392,187 @@ class $c_Lexample_MapPainter extends $c_O {
     this.Lexample_MapPainter__f_mapSize = mapSize;
     this.Lexample_MapPainter__f_fieldSize = $m_Lexample_MapPainter$().Lexample_MapPainter$__f_fieldSize
   };
-  printMap__Lexample_Snake__ALexample_Position__V(snake, foodPositions) {
+  printMap__ALexample_Snake__ALexample_Position__V(snakes, foodPositions) {
     this.Lexample_MapPainter__f_ctx.clearRect(0.0, 0.0, $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize), $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize));
-    const $$x1 = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("score");
-    const this$1 = snake.Lexample_Snake__f_score;
-    $$x1.innerText = ("" + this$1);
+    const xs = $m_sc_ArrayOps$().zipWithIndex$extension__O__AT2(snakes);
+    const f = ((this$3) => ((x0$1$2) => {
+      const x0$1 = $as_T2(x0$1$2);
+      if ((x0$1 !== null)) {
+        const snake = $as_Lexample_Snake(x0$1.T2__f__1);
+        const i = $uI(x0$1.T2__f__2);
+        const $$x1 = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById(("score" + i));
+        const this$4 = snake.Lexample_Snake__f_score;
+        $$x1.innerText = ("" + this$4)
+      } else {
+        throw new $c_s_MatchError(x0$1)
+      }
+    }))(this);
+    const len = xs.u.length;
+    let i$1 = 0;
+    if ((xs !== null)) {
+      while ((i$1 < len)) {
+        const arg1 = xs.get(i$1);
+        f(arg1);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_I(xs, 1)) {
+      const x3 = $asArrayOf_I(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$1 = x3.get(i$1);
+        f(arg1$1);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_D(xs, 1)) {
+      const x4 = $asArrayOf_D(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$2 = x4.get(i$1);
+        f(arg1$2);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_J(xs, 1)) {
+      const x5 = $asArrayOf_J(xs, 1);
+      while ((i$1 < len)) {
+        const t = x5.get(i$1);
+        const lo = t.RTLong__f_lo;
+        const hi = t.RTLong__f_hi;
+        f(new $c_RTLong(lo, hi));
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_F(xs, 1)) {
+      const x6 = $asArrayOf_F(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$3 = x6.get(i$1);
+        f(arg1$3);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_C(xs, 1)) {
+      const x7 = $asArrayOf_C(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$4 = x7.get(i$1);
+        f($bC(arg1$4));
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_B(xs, 1)) {
+      const x8 = $asArrayOf_B(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$5 = x8.get(i$1);
+        f(arg1$5);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_S(xs, 1)) {
+      const x9 = $asArrayOf_S(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$6 = x9.get(i$1);
+        f(arg1$6);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else if ($isArrayOf_Z(xs, 1)) {
+      const x10 = $asArrayOf_Z(xs, 1);
+      while ((i$1 < len)) {
+        const arg1$7 = x10.get(i$1);
+        f(arg1$7);
+        i$1 = ((1 + i$1) | 0)
+      }
+    } else {
+      throw new $c_s_MatchError(xs)
+    };
     this.paintField__V();
-    this.paintSnake__Lexample_Snake__V(snake);
+    const xs$1 = $m_sc_ArrayOps$().zipWithIndex$extension__O__AT2(snakes);
+    const f$1 = ((this$2$1) => ((x0$2$2) => {
+      const x0$2 = $as_T2(x0$2$2);
+      if ((x0$2 !== null)) {
+        const snake$1 = $as_Lexample_Snake(x0$2.T2__f__1);
+        const i$2 = $uI(x0$2.T2__f__2);
+        this$2$1.paintSnake__Lexample_Snake__I__V(snake$1, i$2)
+      } else {
+        throw new $c_s_MatchError(x0$2)
+      }
+    }))(this);
+    const len$1 = xs$1.u.length;
+    let i$3 = 0;
+    if ((xs$1 !== null)) {
+      while ((i$3 < len$1)) {
+        const arg1$8 = xs$1.get(i$3);
+        f$1(arg1$8);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_I(xs$1, 1)) {
+      const x3$1 = $asArrayOf_I(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$9 = x3$1.get(i$3);
+        f$1(arg1$9);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_D(xs$1, 1)) {
+      const x4$1 = $asArrayOf_D(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$10 = x4$1.get(i$3);
+        f$1(arg1$10);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_J(xs$1, 1)) {
+      const x5$1 = $asArrayOf_J(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const t$1 = x5$1.get(i$3);
+        const lo$1 = t$1.RTLong__f_lo;
+        const hi$1 = t$1.RTLong__f_hi;
+        f$1(new $c_RTLong(lo$1, hi$1));
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_F(xs$1, 1)) {
+      const x6$1 = $asArrayOf_F(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$11 = x6$1.get(i$3);
+        f$1(arg1$11);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_C(xs$1, 1)) {
+      const x7$1 = $asArrayOf_C(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$12 = x7$1.get(i$3);
+        f$1($bC(arg1$12));
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_B(xs$1, 1)) {
+      const x8$1 = $asArrayOf_B(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$13 = x8$1.get(i$3);
+        f$1(arg1$13);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_S(xs$1, 1)) {
+      const x9$1 = $asArrayOf_S(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$14 = x9$1.get(i$3);
+        f$1(arg1$14);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else if ($isArrayOf_Z(xs$1, 1)) {
+      const x10$1 = $asArrayOf_Z(xs$1, 1);
+      while ((i$3 < len$1)) {
+        const arg1$15 = x10$1.get(i$3);
+        f$1(arg1$15);
+        i$3 = ((1 + i$3) | 0)
+      }
+    } else {
+      throw new $c_s_MatchError(xs$1)
+    };
     this.paintFood__ALexample_Position__V(foodPositions)
   };
   paintField__V() {
     this.Lexample_MapPainter__f_ctx.fillStyle = "yellow";
     this.Lexample_MapPainter__f_ctx.fillRect(0.0, 0.0, $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize), $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize))
   };
-  paintSnake__Lexample_Snake__V(snake) {
-    this.Lexample_MapPainter__f_ctx.fillStyle = "green";
+  paintSnake__Lexample_Snake__I__V(snake, idx) {
+    if ((idx === 0)) {
+      this.Lexample_MapPainter__f_ctx.fillStyle = "green"
+    } else {
+      this.Lexample_MapPainter__f_ctx.fillStyle = "blue"
+    };
     const xs = snake.Lexample_Snake__f_positions;
-    const f = ((this$3) => ((elem$2) => {
+    const f = ((this$4) => ((elem$2) => {
       const elem = $as_Lexample_Position(elem$2);
-      this$3.Lexample_MapPainter__f_ctx.fillRect($imul(elem.Lexample_Position__f_positionX, this$3.Lexample_MapPainter__f_fieldSize), $imul(elem.Lexample_Position__f_positionY, this$3.Lexample_MapPainter__f_fieldSize), this$3.Lexample_MapPainter__f_fieldSize, this$3.Lexample_MapPainter__f_fieldSize)
+      this$4.Lexample_MapPainter__f_ctx.fillRect($imul(elem.Lexample_Position__f_positionX, this$4.Lexample_MapPainter__f_fieldSize), $imul(elem.Lexample_Position__f_positionY, this$4.Lexample_MapPainter__f_fieldSize), this$4.Lexample_MapPainter__f_fieldSize, this$4.Lexample_MapPainter__f_fieldSize)
     }))(this);
     const len = xs.u.length;
     let i = 0;
@@ -10182,6 +10661,9 @@ const $d_scm_StringBuilder = new $TypeData().initClass({
 });
 $c_scm_StringBuilder.prototype.$classData = $d_scm_StringBuilder;
 $L0 = new $c_RTLong(0, 0);
+changePlayerNum = (function() {
+  $m_Lexample_App$().changePlayerNum__V()
+});
 pauseGame = (function() {
   $m_Lexample_App$().pauseGame__V()
 });

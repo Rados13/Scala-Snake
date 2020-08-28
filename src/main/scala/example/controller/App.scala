@@ -15,7 +15,12 @@ object App {
   setSpeedOnEasy()
   var mapSize: Int = 50
   var game:Game = null;
+  var isTwoPlayersMode:Boolean = false;
 
+
+  val textForOne = "Mode: one player"
+  val textForTwo = "Mode: two player"
+  val twoPlayersInfoDivId = "two-players-info"
 
   def main(args: Array[String]): Unit = {
     println("Hello world!")
@@ -36,6 +41,23 @@ object App {
   @JSExportTopLevel("setSpeedOnHard")
   def setSpeedOnHard():Unit = changeSelectedButton(Hard)
 
+  @JSExportTopLevel("changePlayerNum")
+  def changePlayerNum():Unit = {
+    
+    val htmlButton = document.getElementById("players")
+    htmlButton.innerText match {
+      case `textForOne` =>
+        htmlButton.innerText = textForTwo
+        document.getElementById(twoPlayersInfoDivId).setAttribute("style","display:block")
+        isTwoPlayersMode = !isTwoPlayersMode
+      case `textForTwo` =>
+        htmlButton.innerText = textForOne
+        document.getElementById(twoPlayersInfoDivId).setAttribute("style","display:none")
+        isTwoPlayersMode = !isTwoPlayersMode
+      case _ => println("Big error") 
+    }
+  }
+
   @JSExportTopLevel("startGame")
   def prepareGame():Unit = {
     this.mapSize = 50
@@ -45,10 +67,11 @@ object App {
        case e:NumberFormatException => println(s"Not getting input!")
     }
 
-    if(this.mapSize.isFinite && this.mapSize>0){
+    if(this.mapSize.isFinite && this.mapSize>=10){
       dom.window.alert(s"Start a game ${this.mapSize}")
       val canvas = document.getElementById("map").asInstanceOf[html.Canvas]
-      game = Game(canvas,this.mapSize,speedLevel)
+      game = Game(canvas,this.mapSize,speedLevel,isTwoPlayersMode)
+      document.getElementById("game").setAttribute("style","display: flex;")
       startGame
     }else{
       dom.window.alert("You give incorrect map size")
@@ -57,8 +80,11 @@ object App {
 
   def startGame:Unit = {
     document.getElementById("params").setAttribute("style","display: none")
+    if(isTwoPlayersMode){
+      document.getElementById("scoreTwo").setAttribute("style","display: flex")
+      document.getElementById("scoreOne").innerHTML = "Score player one: <div id=\"score0\" class=\"score-text\">0</div>"
+    }
     document.getElementById("pause").innerText = "Pause game"
-    println(document.getElementById("game").setAttribute("style","display: flex"))
     game.play
   }
 
