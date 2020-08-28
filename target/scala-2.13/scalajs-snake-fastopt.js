@@ -760,7 +760,6 @@ class $c_Lexample_App$ extends $c_O {
     }
   };
   prepareGame__V() {
-    this.Lexample_App$__f_mapSize = 50;
     try {
       const x = $as_T($m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("size").value);
       const this$3 = $m_jl_Integer$();
@@ -776,14 +775,14 @@ class $c_Lexample_App$ extends $c_O {
       }
     };
     const x$1 = $fround(this.Lexample_App$__f_mapSize);
-    if ((((x$1 === x$1) && (!((x$1 === Infinity) || (x$1 === (-Infinity))))) && (this.Lexample_App$__f_mapSize >= 10))) {
+    if (((((x$1 === x$1) && (!((x$1 === Infinity) || (x$1 === (-Infinity))))) && (this.Lexample_App$__f_mapSize >= 10)) && (this.Lexample_App$__f_mapSize <= 200))) {
       $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert(("Start a game " + this.Lexample_App$__f_mapSize));
       const canvas = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("map");
       this.Lexample_App$__f_game = $m_Lexample_Game$().apply__Lorg_scalajs_dom_raw_HTMLCanvasElement__I__s_Enumeration$Value__Z__Lexample_Game(canvas, this.Lexample_App$__f_mapSize, this.Lexample_App$__f_speedLevel, this.Lexample_App$__f_isTwoPlayersMode);
       $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("game").setAttribute("style", "display: flex;");
       this.startGame__V()
     } else {
-      $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("You give incorrect map size")
+      $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().alert("You give incorrect map size. Value must be from range (10-200)")
     }
   };
   startGame__V() {
@@ -2805,11 +2804,6 @@ function $m_Lexample_Game$() {
   return $n_Lexample_Game$
 }
 class $c_Lexample_MapPainter$ extends $c_O {
-  constructor() {
-    super();
-    this.Lexample_MapPainter$__f_fieldSize = 0;
-    this.Lexample_MapPainter$__f_fieldSize = 10
-  };
   getContext__Lorg_scalajs_dom_raw_HTMLCanvasElement__s_util_Either(mapHtml) {
     const x1 = mapHtml.getContext("2d");
     if ($uZ((x1 instanceof CanvasRenderingContext2D))) {
@@ -2832,9 +2826,7 @@ class $c_Lexample_MapPainter$ extends $c_O {
     } else {
       ctx = null
     };
-    mapHtml.height = $imul(mapSize, this.Lexample_MapPainter$__f_fieldSize);
-    mapHtml.width = $imul(mapSize, this.Lexample_MapPainter$__f_fieldSize);
-    return ((ctx !== null) ? new $c_Lexample_MapPainter(ctx, mapSize) : null)
+    return ((ctx !== null) ? new $c_Lexample_MapPainter(ctx, mapSize, $intDiv($uI(mapHtml.height), mapSize)) : null)
   };
 }
 const $d_Lexample_MapPainter$ = new $TypeData().initClass({
@@ -5383,14 +5375,14 @@ const $d_Lexample_Game = new $TypeData().initClass({
 });
 $c_Lexample_Game.prototype.$classData = $d_Lexample_Game;
 class $c_Lexample_MapPainter extends $c_O {
-  constructor(ctx, mapSize) {
+  constructor(ctx, mapSize, fieldSize) {
     super();
     this.Lexample_MapPainter__f_ctx = null;
     this.Lexample_MapPainter__f_mapSize = 0;
     this.Lexample_MapPainter__f_fieldSize = 0;
     this.Lexample_MapPainter__f_ctx = ctx;
     this.Lexample_MapPainter__f_mapSize = mapSize;
-    this.Lexample_MapPainter__f_fieldSize = $m_Lexample_MapPainter$().Lexample_MapPainter$__f_fieldSize
+    this.Lexample_MapPainter__f_fieldSize = fieldSize
   };
   printMap__ALexample_Snake__ALexample_Position__V(snakes, foodPositions) {
     this.Lexample_MapPainter__f_ctx.clearRect(0.0, 0.0, $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize), $imul(this.Lexample_MapPainter__f_mapSize, this.Lexample_MapPainter__f_fieldSize));
@@ -5648,7 +5640,7 @@ class $c_Lexample_MapPainter extends $c_O {
     const f = ((this$2) => ((elem$2) => {
       const elem = $as_Lexample_Position(elem$2);
       this$2.Lexample_MapPainter__f_ctx.beginPath();
-      this$2.Lexample_MapPainter__f_ctx.arc((($imul(elem.Lexample_Position__f_positionX, this$2.Lexample_MapPainter__f_fieldSize) + ((this$2.Lexample_MapPainter__f_fieldSize / 2) | 0)) | 0), (($imul(elem.Lexample_Position__f_positionY, this$2.Lexample_MapPainter__f_fieldSize) + ((this$2.Lexample_MapPainter__f_fieldSize / 2) | 0)) | 0), (($imul(3, this$2.Lexample_MapPainter__f_fieldSize) / 4) | 0), 0.0, 6.283185307179586);
+      this$2.Lexample_MapPainter__f_ctx.arc((($imul(elem.Lexample_Position__f_positionX, this$2.Lexample_MapPainter__f_fieldSize) + ((this$2.Lexample_MapPainter__f_fieldSize / 2) | 0)) | 0), (($imul(elem.Lexample_Position__f_positionY, this$2.Lexample_MapPainter__f_fieldSize) + ((this$2.Lexample_MapPainter__f_fieldSize / 2) | 0)) | 0), ((this$2.Lexample_MapPainter__f_fieldSize / 2) | 0), 0.0, 6.283185307179586);
       this$2.Lexample_MapPainter__f_ctx.fillStyle = "red";
       this$2.Lexample_MapPainter__f_ctx.fill()
     }))(this);
@@ -5726,7 +5718,7 @@ class $c_Lexample_MapPainter extends $c_O {
     return "MapPainter"
   };
   productArity__I() {
-    return 2
+    return 3
   };
   productElement__I__O(x$1) {
     switch (x$1) {
@@ -5736,6 +5728,10 @@ class $c_Lexample_MapPainter extends $c_O {
       }
       case 1: {
         return this.Lexample_MapPainter__f_mapSize;
+        break
+      }
+      case 2: {
+        return this.Lexample_MapPainter__f_fieldSize;
         break
       }
       default: {
@@ -5759,7 +5755,10 @@ class $c_Lexample_MapPainter extends $c_O {
     const data$2 = this.Lexample_MapPainter__f_mapSize;
     acc = $m_sr_Statics$().mix__I__I__I(hash$2, data$2);
     const hash$3 = acc;
-    return $m_sr_Statics$().finalizeHash__I__I__I(hash$3, 2)
+    const data$3 = this.Lexample_MapPainter__f_fieldSize;
+    acc = $m_sr_Statics$().mix__I__I__I(hash$3, data$3);
+    const hash$4 = acc;
+    return $m_sr_Statics$().finalizeHash__I__I__I(hash$4, 3)
   };
   toString__T() {
     return $m_sr_ScalaRunTime$()._toString__s_Product__T(this)
@@ -5769,7 +5768,7 @@ class $c_Lexample_MapPainter extends $c_O {
       return true
     } else if ((x$1 instanceof $c_Lexample_MapPainter)) {
       const MapPainter$1 = $as_Lexample_MapPainter(x$1);
-      if ((this.Lexample_MapPainter__f_mapSize === MapPainter$1.Lexample_MapPainter__f_mapSize)) {
+      if (((this.Lexample_MapPainter__f_mapSize === MapPainter$1.Lexample_MapPainter__f_mapSize) && (this.Lexample_MapPainter__f_fieldSize === MapPainter$1.Lexample_MapPainter__f_fieldSize))) {
         const x = this.Lexample_MapPainter__f_ctx;
         const y = MapPainter$1.Lexample_MapPainter__f_ctx;
         return $m_sr_BoxesRunTime$().equals__O__O__Z(x, y)

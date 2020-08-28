@@ -60,21 +60,20 @@ object App {
 
   @JSExportTopLevel("startGame")
   def prepareGame():Unit = {
-    this.mapSize = 50
     try{
       this.mapSize = document.getElementById("size").asInstanceOf[html.Input].value.toInt
     }catch{
        case e:NumberFormatException => println(s"Not getting input!")
     }
 
-    if(this.mapSize.isFinite && this.mapSize>=10){
+    if(this.mapSize.isFinite && this.mapSize>=10 && this.mapSize<=200){
       dom.window.alert(s"Start a game ${this.mapSize}")
       val canvas = document.getElementById("map").asInstanceOf[html.Canvas]
       game = Game(canvas,this.mapSize,speedLevel,isTwoPlayersMode)
       document.getElementById("game").setAttribute("style","display: flex;")
       startGame
     }else{
-      dom.window.alert("You give incorrect map size")
+      dom.window.alert("You give incorrect map size. Value must be from range (10-200)")
     }    
   }
 

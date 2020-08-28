@@ -21,8 +21,6 @@ object Game{
 
 case class Game(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel,isTwoPlayer:Boolean){
 
-
-    
     val snakes:Array[Snake] = if (isTwoPlayer) Array(Snake(mapSize),Snake(mapSize)) else Array(Snake(mapSize))
     val turnPerFoodGeneration = 25
     val mapPainter = MapPainter(mapHtml,mapSize)

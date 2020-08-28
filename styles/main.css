@@ -46,12 +46,15 @@ body{
 #scores{
     display:flex;
     flex-direction: column;
+    align-self: center;
 }
 
 .score-div,.game-div{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    font-size: large;
+    font-weight: bold;
 }
 
 .score-text{
@@ -68,8 +71,15 @@ body{
     display: none;
 }
 
+#pause{
+    max-height: 50%;
+    height: 50%;
+    align-self: center;
+}
+
 #game{
     display: none;
+    align-content: center;
 }
 
 
