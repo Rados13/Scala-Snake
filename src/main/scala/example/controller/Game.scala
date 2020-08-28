@@ -58,7 +58,8 @@ case class Game(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel,isTwoPlaye
 
     def isSecondWin:Boolean = {
         val snakeFirstHead = snakes(0).positions.head
-        !snakes(0).notEatYourself || snakes(1).positions.contains(snakeFirstHead)
+        !snakes(0).notEatYourself || snakes(1).positions.tail.contains(snakeFirstHead) || 
+        (snakes(1).positions.head == snakeFirstHead && snakes(1).score > snakes(0).score)
     }
 
     def notEatOtherSnake:Boolean = {

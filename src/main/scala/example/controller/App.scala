@@ -22,6 +22,10 @@ object App {
   val textForTwo = "Mode: two player"
   val twoPlayersInfoDivId = "two-players-info"
 
+  def main(args: Array[String]): Unit = {
+    println("Hello world!")
+  }
+
   def changeSelectedButton(which:SpeedLevel){
     document.getElementById(this.speedLevel.toString()).setAttribute("style","background-color: GhostWhite")
     document.getElementById(which.toString()).setAttribute("style","background-color: DarkGray")

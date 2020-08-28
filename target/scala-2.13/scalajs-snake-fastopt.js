@@ -1771,6 +1771,13 @@ class $c_sc_ArrayOps$ extends $c_O {
       return $m_s_reflect_ClassTag$().apply__jl_Class__s_reflect_ClassTag($objectGetClass(this$).getComponentType__jl_Class()).newArray__I__O(0)
     }
   };
+  tail$extension__O__O(this$) {
+    if (($m_sr_ScalaRunTime$().array_length__O__I(this$) === 0)) {
+      throw new $c_jl_UnsupportedOperationException("tail of empty array")
+    } else {
+      return $m_sc_ArrayOps$().slice$extension__O__I__I__O(this$, 1, $m_sr_ScalaRunTime$().array_length__O__I(this$))
+    }
+  };
   init$extension__O__O(this$) {
     if (($m_sr_ScalaRunTime$().array_length__O__I(this$) === 0)) {
       throw new $c_jl_UnsupportedOperationException("init of empty array")
@@ -5042,12 +5049,27 @@ class $c_Lexample_Game extends $c_O {
     const $$x1 = $m_sc_ArrayOps$();
     const xs = this.Lexample_Game__f_snakes.get(0).Lexample_Snake__f_positions;
     const snakeFirstHead = $as_Lexample_Position($$x1.head$extension__O__O(xs));
+    let $$x2;
     if ((!this.Lexample_Game__f_snakes.get(0).notEatYourself__Z())) {
+      $$x2 = true
+    } else {
+      const $$x4 = $m_sc_ArrayOps$();
+      const $$x3 = $m_sc_ArrayOps$();
+      const xs$1 = this.Lexample_Game__f_snakes.get(1).Lexample_Snake__f_positions;
+      const xs$2 = $asArrayOf_O($$x3.tail$extension__O__O(xs$1), 1);
+      $$x2 = $$x4.contains$extension__O__O__Z(xs$2, snakeFirstHead)
+    };
+    if ($$x2) {
       return true
     } else {
-      const $$x2 = $m_sc_ArrayOps$();
-      const xs$1 = this.Lexample_Game__f_snakes.get(1).Lexample_Snake__f_positions;
-      return $$x2.contains$extension__O__O__Z(xs$1, snakeFirstHead)
+      const $$x5 = $m_sc_ArrayOps$();
+      const xs$3 = this.Lexample_Game__f_snakes.get(1).Lexample_Snake__f_positions;
+      const x = $$x5.head$extension__O__O(xs$3);
+      if (((x === null) ? (snakeFirstHead === null) : $dp_equals__O__Z(x, snakeFirstHead))) {
+        return (this.Lexample_Game__f_snakes.get(1).Lexample_Snake__f_score > this.Lexample_Game__f_snakes.get(0).Lexample_Snake__f_score)
+      } else {
+        return false
+      }
     }
   };
   notEatOtherSnake__Z() {
