@@ -32,20 +32,9 @@ body{
 }
 
 #map{
-    margin-top: 40px;
-    margin-bottom: 10px;
-    margin-left: 0;
-    margin-right: 0;
-    
+    max-width: 100%;      
+    width:50%;  
 }
-
-#speed-buttons,.line{
-    margin-top:20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
 
 #scores{
     display:flex;
@@ -66,7 +55,7 @@ body{
 }
 
 .colors{
-    width: 20px;
+    width: 20px ;
     height: 20px;
     margin: 0 10px;
 }

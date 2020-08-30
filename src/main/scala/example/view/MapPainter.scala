@@ -8,8 +8,6 @@ import Position._
 
 object MapPainter{
 
-
-
     def getContext(mapHtml:html.Canvas): Either[String,CanvasRenderingContext2D] = mapHtml.getContext("2d") match {
             case context: CanvasRenderingContext2D => Right(context)
             case other => 

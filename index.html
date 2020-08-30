@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Scalajs Snake</title>
     <link rel="stylesheet" type="text/css" href="styles/main.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
@@ -15,28 +15,35 @@
       <div id='params'>
         
         <h3 class="title">Set game params</h3>
+        <br>
         <label>Map size(min 10 max 200) :</label><input type="number" id="size" value=50>
         <br>
-        
-        <div id="speed-buttons">
-          <button id='Easy' class="buttons" onclick="setSpeedOnEasy()">Easy speed</button>
-          <button id='Medium' class="buttons" onclick="setSpeedOnMedium()">Medium speed</button>
-          <button id='Hard' class="buttons" onclick="setSpeedOnHard()">Hard speed</button>
+        <br>
+        <div id="speed-buttons" class="container">
+          <div class="row justify-content-center">
+            <button id='Easy' class="buttons" onclick="setSpeedOnEasy()">Easy speed</button>
+            <button id='Medium' class="buttons" onclick="setSpeedOnMedium()">Medium speed</button>
+            <button id='Hard' class="buttons" onclick="setSpeedOnHard()">Hard speed</button>
+          </div>
         </div>
 
         <br>
+        
         <button id="players" class="buttons" onclick="changePlayerNum()">Mode: one player</button>
+
         <br>
 
-        <div id="two-players-info">
+        <div id="two-players-info" class="container">
         
-          <div class="line">
-             <div>First player snake is: </div>
+          <br>
+
+          <div class="row justify-content-center">
+             <div >First player snake is: </div>
              <div class="colors" style="background-color: green;"></div>
-             <div>Navigation: &#8593; &#8592; &#8595; &#8594;</div>
+             <div >Navigation: &#8593; &#8592; &#8595; &#8594;</div>
           </div>
         
-          <div class="line">
+          <div class="row justify-content-center">
             <div>Second player snake is: </div>
             <div class="colors" style="background-color: blue;"></div>
             <div>Navigation: w a s d</div>
@@ -46,22 +53,29 @@
         <br>
         
         <button class="buttons" onclick="startGame()">Start Game!</button>
-      </div>
 
-      <div id="game" class="game-div">
-        
-        <div id="scores">
-          <div id="scoreOne" class="score-div">Score: <div id="score0" class="score-text">0</div></div>
-          <div id="scoreTwo" class="score-div">Score player two: <div id="score1" class="score-text">0</div></div>
-        </div>
-        
-        <button id="pause" class="buttons" onclick="pauseGame()">Pause</button>
       </div>
 
     </div>
     
-    <div id="canvas-div">
-      <canvas id="map" width="700" height="700">Your browser don't work with canvas</canvas>
+
+    <div id="canvas-div" class="row">
+      <div class="col-xs-10 col-md-8 offset-xs-1 offset-md-2 align-self-center">
+        <div class="row justify-content-center">
+          <canvas id="map" width="1000" height="1000" class="justify-self-center">Your browser don't work with canvas</canvas>
+        </div>
+      </div>
+
+      <div class="col-xs-1 col-md-2 align-self-center justify-self-flex-start">
+        <div id="game" class="game-div container">
+          <div id="scores" class="row ">
+            <div id="scoreOne" class="score-div">Score: <div id="score0" class="score-text">0</div></div>
+            <div id="scoreTwo" class="score-div">Score player two: <div id="score1" class="score-text">0</div></div>
+            <br>
+            <button id="pause" class="buttons" onclick="pauseGame()">Pause</button>
+          </div>
+        </div>
+      </div>
     </div>
     
     <script type="text/javascript" src="./target/scala-2.13/scalajs-snake-fastopt.js"></script>
