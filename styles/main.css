@@ -10,8 +10,9 @@ body{
 
 #canvas-div{
     background-color: orange;
-    height: 750px;
-
+    height: 100%;
+    width: 100%;
+    margin: 0;
 }
 .buttons{
     background-color: GhostWhite;

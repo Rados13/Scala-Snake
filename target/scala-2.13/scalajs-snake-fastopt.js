@@ -786,7 +786,13 @@ class $c_Lexample_App$ extends $c_O {
     }
   };
   startGame__V() {
-    $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("params").setAttribute("style", "display: none");
+    $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("menu").setAttribute("style", "display: none");
+    const body = $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().body;
+    $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().documentElement;
+    const a = $uI(body.scrollHeight);
+    const b = $uD(body.offsetHeight);
+    const height = $uD(Math.max(a, b));
+    body.setAttribute("style", (("height: " + height) + " px"));
     if (this.Lexample_App$__f_isTwoPlayersMode) {
       $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("scoreTwo").setAttribute("style", "display: flex");
       $m_Lorg_scalajs_dom_package$().document__Lorg_scalajs_dom_raw_HTMLDocument().getElementById("scoreOne").innerHTML = "Score player one: <div id=\"score0\" class=\"score-text\">0</div>"
@@ -4624,6 +4630,25 @@ function $f_s_Product2__productElement__I__O($thiz, n) {
     }
   }
 }
+function $f_s_Product3__productElement__I__O($thiz, n) {
+  switch (n) {
+    case 0: {
+      return $thiz.T3__f__1;
+      break
+    }
+    case 1: {
+      return $thiz.T3__f__2;
+      break
+    }
+    case 2: {
+      return $thiz.T3__f__3;
+      break
+    }
+    default: {
+      throw $ct_jl_IndexOutOfBoundsException__T__(new $c_jl_IndexOutOfBoundsException(), (n + " is out of bounds (min 0, max 2)"))
+    }
+  }
+}
 const $ct_sc_ClassTagIterableFactory$AnyIterableDelegate__sc_ClassTagIterableFactory__ = (function($thiz, delegate) {
   $thiz.sc_ClassTagIterableFactory$AnyIterableDelegate__f_delegate = delegate;
   return $thiz
@@ -4903,6 +4928,8 @@ class $c_Lexample_Game extends $c_O {
     this.Lexample_Game__f_handler = 0;
     this.Lexample_Game__f_turn = 0;
     this.Lexample_Game__f_foodPositions = null;
+    this.Lexample_Game__f_xDown = 0.0;
+    this.Lexample_Game__f_yDown = 0.0;
     this.Lexample_Game__f_turnFunction = null;
     this.Lexample_Game__f_mapHtml = mapHtml;
     this.Lexample_Game__f_mapSize = mapSize;
@@ -4930,8 +4957,8 @@ class $c_Lexample_Game extends $c_O {
         let i$1 = 0;
         while ((i$1 < xs$1.u.length)) {
           const arg1 = xs$1.get(i$1);
-          const x$1 = $as_Lexample_Snake(arg1);
-          if ((!x$1.notEatYourself__Z())) {
+          const x$3 = $as_Lexample_Snake(arg1);
+          if ((!x$3.notEatYourself__Z())) {
             $$x1 = false;
             break _return
           };
@@ -4945,9 +4972,9 @@ class $c_Lexample_Game extends $c_O {
         };
         this$3.Lexample_Game__f_mapPainter.printMap__ALexample_Snake__ALexample_Position__V(this$3.Lexample_Game__f_snakes, this$3.Lexample_Game__f_foodPositions);
         const xs$2 = this$3.Lexample_Game__f_snakes;
-        const f = ((this$2$1) => ((x$2$2) => {
-          const x$2 = $as_Lexample_Snake(x$2$2);
-          x$2.move__V()
+        const f = ((this$2$1) => ((x$4$2) => {
+          const x$4 = $as_Lexample_Snake(x$4$2);
+          x$4.move__V()
         }))(this$3);
         const len$1 = xs$2.u.length;
         let i$2 = 0;
@@ -5037,6 +5064,12 @@ class $c_Lexample_Game extends $c_O {
     $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("keydown", ((arg$outer) => ((arg1$2) => {
       arg$outer.matchingKey__Lorg_scalajs_dom_raw_KeyboardEvent__V(arg1$2)
     }))(this));
+    $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("touchstart", ((arg$outer$1) => ((arg1$2$1) => {
+      arg$outer$1.handleTouchStart__Lorg_scalajs_dom_raw_TouchEvent__V(arg1$2$1)
+    }))(this));
+    $m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().addEventListener("touchmove", ((arg$outer$2) => ((arg1$2$2) => {
+      arg$outer$2.handleTouchMove__Lorg_scalajs_dom_raw_TouchEvent__V(arg1$2$2)
+    }))(this));
     this.Lexample_Game__f_handler = $uI($m_Lorg_scalajs_dom_package$().window__Lorg_scalajs_dom_raw_Window().setInterval($m_sjs_js_Any$().fromFunction0__F0__sjs_js_Function0(this.Lexample_Game__f_turnFunction), $m_Lexample_SpeedLevel$().toValue__s_Enumeration$Value__I(this.Lexample_Game__f_speedLevel)))
   };
   pause__V() {
@@ -5116,8 +5149,8 @@ class $c_Lexample_Game extends $c_O {
         let i = 0;
         while ((i < xs$3.u.length)) {
           const x = xs$3.get(i);
-          const x$3 = $as_Lexample_Position(x);
-          if ((!((x$3 === null) ? (snakeHead === null) : x$3.equals__O__Z(snakeHead)))) {
+          const x$5 = $as_Lexample_Position(x);
+          if ((!((x$5 === null) ? (snakeHead === null) : x$5.equals__O__Z(snakeHead)))) {
             const unboxedElem = (isCharArrayBuilder ? $uC(x) : ((x === null) ? elementClass.jl_Class__f_data.zero : x));
             jsElems.push(unboxedElem)
           };
@@ -5198,48 +5231,6 @@ class $c_Lexample_Game extends $c_O {
       throw new $c_s_MatchError(xs)
     }
   };
-  matchingKey__Lorg_scalajs_dom_raw_KeyboardEvent__V(event) {
-    const x1 = $uI(event.keyCode);
-    switch (x1) {
-      case 37: {
-        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
-        break
-      }
-      case 38: {
-        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
-        break
-      }
-      case 39: {
-        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
-        break
-      }
-      case 40: {
-        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
-        break
-      }
-    };
-    if (this.Lexample_Game__f_isTwoPlayer) {
-      const x1$2 = $uI(event.keyCode);
-      switch (x1$2) {
-        case 65: {
-          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
-          break
-        }
-        case 87: {
-          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
-          break
-        }
-        case 68: {
-          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
-          break
-        }
-        case 83: {
-          this.Lexample_Game__f_snakes.get(1).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
-          break
-        }
-      }
-    }
-  };
   generateNewFood__V() {
     const $$x1 = $m_Lexample_Position$();
     const this$1 = $m_Lexample_Position$();
@@ -5253,9 +5244,9 @@ class $c_Lexample_Game extends $c_O {
         let i = 0;
         while ((i < xs.u.length)) {
           const arg1 = xs.get(i);
-          const x$4 = $as_Lexample_Snake(arg1);
+          const x$6 = $as_Lexample_Snake(arg1);
           const $$x5 = $m_sc_ArrayOps$();
-          const xs$1 = x$4.Lexample_Snake__f_positions;
+          const xs$1 = x$6.Lexample_Snake__f_positions;
           if ($$x5.contains$extension__O__O__Z(xs$1, $as_Lexample_Position(elem$1))) {
             $$x4 = i;
             break _return
@@ -5294,6 +5285,93 @@ class $c_Lexample_Game extends $c_O {
     };
     $m_sr_ScalaRunTime$().array_update__O__I__O__V(dest$1, xs$3.u.length, x);
     this.Lexample_Game__f_foodPositions = $asArrayOf_Lexample_Position(dest$1, 1)
+  };
+  matchingKey__Lorg_scalajs_dom_raw_KeyboardEvent__V(event) {
+    const x1 = $uI(event.keyCode);
+    switch (x1) {
+      case 37: {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
+        break
+      }
+      case 38: {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
+        break
+      }
+      case 39: {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
+        break
+      }
+      case 40: {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
+        break
+      }
+    };
+    const whichSnakeListen = (this.Lexample_Game__f_isTwoPlayer ? 1 : 0);
+    const x1$2 = $uI(event.keyCode);
+    switch (x1$2) {
+      case 65: {
+        this.Lexample_Game__f_snakes.get(whichSnakeListen).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
+        break
+      }
+      case 87: {
+        this.Lexample_Game__f_snakes.get(whichSnakeListen).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
+        break
+      }
+      case 68: {
+        this.Lexample_Game__f_snakes.get(whichSnakeListen).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
+        break
+      }
+      case 83: {
+        this.Lexample_Game__f_snakes.get(whichSnakeListen).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
+        break
+      }
+    }
+  };
+  getTouches__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_TouchList(evt) {
+    return evt.touches
+  };
+  handleTouchStart__Lorg_scalajs_dom_raw_TouchEvent__V(evt) {
+    const firstTouch = this.getTouches__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_TouchList(evt)[0];
+    this.Lexample_Game__f_xDown = $uD(firstTouch.clientX);
+    this.Lexample_Game__f_yDown = $uD(firstTouch.clientY)
+  };
+  handleTouchMove__Lorg_scalajs_dom_raw_TouchEvent__V(evt) {
+    if (((this.Lexample_Game__f_xDown === 0.0) || (this.Lexample_Game__f_yDown === 0.0))) {
+      return (void 0)
+    };
+    const xUp = $uD(evt.touches[0].clientX);
+    const yUp = $uD(evt.touches[0].clientY);
+    const xDiff = (this.Lexample_Game__f_xDown - xUp);
+    const yDiff = (this.Lexample_Game__f_yDown - yUp);
+    const isHorizontalMove = ($uD(Math.abs(xDiff)) > $uD(Math.abs(yDiff)));
+    const x1 = new $c_T3(isHorizontalMove, (xDiff > 0.0), (yDiff > 0.0));
+    matchEnd23: {
+      const p2 = $uZ(x1.T3__f__1);
+      const p3 = $uZ(x1.T3__f__2);
+      if (((p2 === true) && (p3 === true))) {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_West);
+        break matchEnd23
+      };
+      const p5 = $uZ(x1.T3__f__1);
+      const p6 = $uZ(x1.T3__f__2);
+      if (((p5 === true) && (p6 === false))) {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_East);
+        break matchEnd23
+      };
+      const p8 = $uZ(x1.T3__f__1);
+      const p10 = $uZ(x1.T3__f__3);
+      if (((p8 === false) && (p10 === true))) {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_North);
+        break matchEnd23
+      };
+      const p11 = $uZ(x1.T3__f__1);
+      const p13 = $uZ(x1.T3__f__3);
+      if (((p11 === false) && (p13 === false))) {
+        this.Lexample_Game__f_snakes.get(0).changeDirection__s_Enumeration$Value__V($m_Lexample_Direction$().Lexample_Direction$__f_South);
+        break matchEnd23
+      };
+      throw new $c_s_MatchError(x1)
+    }
   };
   productPrefix__T() {
     return "Game"
@@ -7020,6 +7098,66 @@ const $d_T2 = new $TypeData().initClass({
   Ljava_io_Serializable: 1
 });
 $c_T2.prototype.$classData = $d_T2;
+class $c_T3 extends $c_O {
+  constructor(_1, _2, _3) {
+    super();
+    this.T3__f__1 = null;
+    this.T3__f__2 = null;
+    this.T3__f__3 = null;
+    this.T3__f__1 = _1;
+    this.T3__f__2 = _2;
+    this.T3__f__3 = _3
+  };
+  productArity__I() {
+    return 3
+  };
+  productElement__I__O(n) {
+    return $f_s_Product3__productElement__I__O(this, n)
+  };
+  toString__T() {
+    return (((((("(" + this.T3__f__1) + ",") + this.T3__f__2) + ",") + this.T3__f__3) + ")")
+  };
+  productPrefix__T() {
+    return "Tuple3"
+  };
+  productIterator__sc_Iterator() {
+    return new $c_sr_ScalaRunTime$$anon$1(this)
+  };
+  hashCode__I() {
+    const this$2 = $m_s_util_hashing_MurmurHash3$();
+    return this$2.productHash__s_Product__I__Z__I(this, (-889275714), false)
+  };
+  equals__O__Z(x$1) {
+    if ((this === x$1)) {
+      return true
+    } else if ((x$1 instanceof $c_T3)) {
+      const Tuple3$1 = $as_T3(x$1);
+      return (($m_sr_BoxesRunTime$().equals__O__O__Z(this.T3__f__1, Tuple3$1.T3__f__1) && $m_sr_BoxesRunTime$().equals__O__O__Z(this.T3__f__2, Tuple3$1.T3__f__2)) && $m_sr_BoxesRunTime$().equals__O__O__Z(this.T3__f__3, Tuple3$1.T3__f__3))
+    } else {
+      return false
+    }
+  };
+}
+function $as_T3(obj) {
+  return (((obj instanceof $c_T3) || (obj === null)) ? obj : $throwClassCastException(obj, "scala.Tuple3"))
+}
+function $isArrayOf_T3(obj, depth) {
+  return (!(!(((obj && obj.$classData) && (obj.$classData.arrayDepth === depth)) && obj.$classData.arrayBase.ancestors.T3)))
+}
+function $asArrayOf_T3(obj, depth) {
+  return (($isArrayOf_T3(obj, depth) || (obj === null)) ? obj : $throwArrayCastException(obj, "Lscala.Tuple3;", depth))
+}
+const $d_T3 = new $TypeData().initClass({
+  T3: 0
+}, false, "scala.Tuple3", {
+  T3: 1,
+  O: 1,
+  s_Product3: 1,
+  s_Product: 1,
+  s_Equals: 1,
+  Ljava_io_Serializable: 1
+});
+$c_T3.prototype.$classData = $d_T3;
 class $c_sc_ClassTagSeqFactory$AnySeqDelegate extends $c_sc_ClassTagIterableFactory$AnyIterableDelegate {
   constructor(delegate) {
     super();

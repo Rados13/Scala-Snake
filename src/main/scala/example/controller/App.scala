@@ -78,7 +78,14 @@ object App {
   }
 
   def startGame:Unit = {
-    document.getElementById("params").setAttribute("style","display: none")
+    document.getElementById("menu").setAttribute("style","display: none")
+    
+    val body = document.body;
+    val html = document.documentElement;
+
+    val height = Math.max( body.scrollHeight.toDouble, body.offsetHeight)
+    body.setAttribute("style",s"height: $height px")
+
     if(isTwoPlayersMode){
       document.getElementById("scoreTwo").setAttribute("style","display: flex")
       document.getElementById("scoreOne").innerHTML = "Score player one: <div id=\"score0\" class=\"score-text\">0</div>"
