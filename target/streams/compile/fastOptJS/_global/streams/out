@@ -1,18 +1,18 @@
 [0m[[0m[0minfo[0m] [0m[0mFast optimizing C:\Users\Radek\git\Scala-Snake\target\scala-2.13\scalajs-snake-fastopt.js[0m
-[0m[[0m[0mdebug[0m] [0m[0mLinker: Compute reachability: 19175 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mLinker: Assemble LinkedClasses: 3828 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mLinker: 41797 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Compute reachability: 34566 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Assemble LinkedClasses: 6847 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: 55924 us[0m
 [0m[[0m[0mdebug[0m] [0m[0mOptimizer: Batch mode: false[0m
-[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Incremental part: 11425 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizing 126 methods.[0m
-[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizer part: 14272 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mOptimizer: 27225 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mRefiner: Compute reachability: 10097 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mRefiner: Assemble LinkedClasses: 857 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mRefiner: 12627 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mEmitter: Generate classes: 21009 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mEmitter: Write trees: 562 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mEmitter: Class tree cache stats: reused: 357 -- invalidated: 7[0m
-[0m[[0m[0mdebug[0m] [0m[0mEmitter: Method tree cache stats: reused: 790 -- invalidated: 72[0m
-[0m[[0m[0mdebug[0m] [0m[0mEmitter: 25285 us[0m
-[0m[[0m[0mdebug[0m] [0m[0mBasicBackend: Write result: 45325 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Incremental part: 37184 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizing 82 methods.[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizer part: 15624 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: 54947 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Compute reachability: 16361 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Assemble LinkedClasses: 1206 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: 21324 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Generate classes: 26934 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Write trees: 848 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Class tree cache stats: reused: 362 -- invalidated: 2[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Method tree cache stats: reused: 816 -- invalidated: 46[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: 35259 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mBasicBackend: Write result: 64589 us[0m

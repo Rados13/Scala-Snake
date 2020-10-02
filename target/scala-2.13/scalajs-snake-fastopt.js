@@ -5328,7 +5328,7 @@ class $c_Lexample_Game extends $c_O {
     }
   };
   getTouches__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_TouchList(evt) {
-    return evt.touches
+    return (($uI(evt.touches.length) > 0) ? evt.touches : evt.originalEvent.touches)
   };
   handleTouchStart__Lorg_scalajs_dom_raw_TouchEvent__V(evt) {
     const firstTouch = this.getTouches__Lorg_scalajs_dom_raw_TouchEvent__Lorg_scalajs_dom_raw_TouchList(evt)[0];
@@ -5371,7 +5371,9 @@ class $c_Lexample_Game extends $c_O {
         break matchEnd23
       };
       throw new $c_s_MatchError(x1)
-    }
+    };
+    this.Lexample_Game__f_xDown = 0.0;
+    this.Lexample_Game__f_yDown = 0.0
   };
   productPrefix__T() {
     return "Game"

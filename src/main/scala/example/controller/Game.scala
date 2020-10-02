@@ -113,7 +113,10 @@ case class Game(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel,isTwoPlaye
         }
     }
 
-    def getTouches(evt:dom.TouchEvent): TouchList = evt.touches
+    def getTouches(evt:dom.TouchEvent): TouchList = {
+        if(evt.touches.length>0)evt.touches
+        else evt.asInstanceOf[js.Dynamic].originalEvent.asInstanceOf[dom.TouchEvent].touches
+    }
 
     def handleTouchStart(evt:dom.TouchEvent) = {
         val firstTouch: Touch = getTouches(evt)(0)
@@ -136,5 +139,7 @@ case class Game(mapHtml:html.Canvas,mapSize:Int,speedLevel:SpeedLevel,isTwoPlaye
             case (false,_,true) => snakes(0).changeDirection(North)
             case (false,_,false) => snakes(0).changeDirection(South)
         }
+        xDown = 0.0;
+        yDown = 0.0;   
     }
 }
