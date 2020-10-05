@@ -9,6 +9,7 @@ html, body {
 body{
     text-align: center;
     background-color: orange;
+    overscroll-behavior: contain;
 }
 
 #canvas-div{
